@@ -42,7 +42,7 @@
 
         public void Add(T item)
         {
-            if (this.Count == items.Length)
+            if (this.Count == this.items.Length)
             {
                 Grow();
             }
@@ -145,9 +145,9 @@
 
         private void ValidateIndex(int index)
         {
-            if (index < 0 || index > this.Count)
+            if (index < 0 || index >= this.Count)
             {
-                throw new IndexOutOfRangeException("Out of range!");
+                throw new IndexOutOfRangeException(nameof(index));
             }
         }
     }
