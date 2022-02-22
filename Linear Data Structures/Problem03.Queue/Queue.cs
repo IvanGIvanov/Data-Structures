@@ -49,7 +49,16 @@
 
         public T Dequeue()
         {
-            throw new NotImplementedException();
+            if (this.head == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var oldHead = this.head;
+            this.head = oldHead.Next;
+
+            this.Count--;
+            return oldHead.Element;
         }
 
         public T Peek()
@@ -63,7 +72,16 @@
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            var node = this.head;
+            while (node != null)
+            {
+                if (node.Element.Equals(item))
+                {
+                    return true;
+                }
+                node = node.Next;
+            }
+            return false;
         }
 
         public IEnumerator<T> GetEnumerator()
