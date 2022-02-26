@@ -51,7 +51,7 @@
                 node = node.Next;
             }
 
-            node = new Node(item);
+            node.Next = new Node(item);
             Count++;
         }
 
