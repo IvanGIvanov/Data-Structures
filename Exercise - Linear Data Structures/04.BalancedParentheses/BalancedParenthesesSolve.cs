@@ -7,7 +7,42 @@
     {
         public bool AreBalanced(string parentheses)
         {
-            throw new NotImplementedException();
+            if (parentheses.Length % 2 == 1)
+            {
+                return false;
+            }
+            var stack = new Stack<char>(parentheses.Length / 2);
+
+            foreach (var character in parentheses)
+            {
+                char expectedCharacter = default;
+                switch (character)
+                {
+                    case ')':
+                        expectedCharacter = '(';
+                        break;
+                    case ']':
+                        expectedCharacter = '[';
+                        break;
+                    case '}': 
+                        expectedCharacter = '{';
+                        break;
+                    default: 
+                        stack.Push(character);
+                        break;
+                }
+
+                if (expectedCharacter == default)
+                {
+                    continue;
+                }
+                if (stack.Pop() != expectedCharacter)
+                {
+                    return false;
+                }
+            }
+
+            return stack.Count == 0;
         }
     }
 }
