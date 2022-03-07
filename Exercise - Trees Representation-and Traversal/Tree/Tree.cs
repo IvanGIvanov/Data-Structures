@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 
     public class Tree<T> : IAbstractTree<T>
     {
@@ -15,6 +16,7 @@
             foreach (var child in children)
             {
                 this.AddChild(child);
+                child.Parent = this;
             }
         }
 
@@ -36,17 +38,58 @@
 
         public string AsString()
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+
+            this.DfsAsString(sb, this, 0);
+
+            return sb.ToString().Trim();
+        }
+
+        private void DfsAsString(StringBuilder sb, Tree<T> tree, int indent)
+        {
+            sb.Append(' ', indent)
+                .AppendLine(tree.Key.ToString());
+
+            foreach (var child in tree.children)
+            {
+                DfsAsString(sb, child, indent + 2);
+            }
+
         }
 
         public IEnumerable<T> GetInternalKeys()
         {
-            throw new NotImplementedException();
+            return this.DfsWithResultKeys(tree => tree.children.Count > 0 && tree.Parent != null);
+        }
+
+        private IEnumerable<T> DfsWithResultKeys(Predicate<Tree<T>> predicate)
+        {
+            var result = new List<T>();
+            var queue = new Queue<Tree<T>>();
+
+            queue.Enqueue(this);
+
+            while (queue.Count > 0)
+            {
+                var element = queue.Dequeue();
+
+                if (predicate.Invoke(element))
+                {
+                    result.Add(element.Key);
+                }
+
+                foreach (var child in element.children)
+                {
+                    queue.Enqueue(child);
+                }
+            }
+
+            return result;
         }
 
         public IEnumerable<T> GetLeafKeys()
         {
-            throw new NotImplementedException();
+            return this.DfsWithResultKeys(tree => tree.children.Count == 0);
         }
 
         public T GetDeepestKey()
