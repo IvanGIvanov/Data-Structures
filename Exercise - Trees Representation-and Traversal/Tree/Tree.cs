@@ -94,7 +94,12 @@
 
         public T GetDeepestKey()
         {
-            throw new NotImplementedException();
+            return this.GetDeepestNode(this).Key;
+        }
+
+        private Tree<T> GetDeepestNode(Tree<T> tree)
+        {
+            var leaves 
         }
 
         public IEnumerable<T> GetLongestPath()
